@@ -11,18 +11,16 @@ content = bs(html, features="html.parser")
 
 # extract relevant info from html
 for tipbox in content.findAll('div', attrs={'class':'fieldmontip'}):
-    print(tipbox.text)
-    imgs = tipbox.findAll('img')
-    for img in imgs:
-        if re.search(r'types', str(img)):
-            # <img src="https://pfq-static.com/img/types/normal.png/t=1262702646"/>
-            # want to print whatever is after the last slash and before the .png in the src url, ex "normal"
-            snipped = re.search(r'/(?<=types\/)(.*?)(?=\.png)/', str(img))
-            print(img)
-        if re.search(r'flags', str(img)):
-            # <img src="https://pfq-static.com/img/dex/flags/all.svg/t=1674162478#paldea" style="height:1em;vertical-align:middle"/>
-            # want to print whatever is after the pound at the end of the src url, ex "paldea"
-            snipped = re.search(r'/(?<=#)(.*?)(?=")/', str(img))
-            print(img)
-    print()
+    name = re.findall(r"(?<=Species: )(.*?)(?=Type)", tipbox.text)
+    if (len(name) > 0):
+        print(name[0])
+        imgs = tipbox.findAll('img')
+        for img in imgs:
+            if re.search(r'types', str(img)):
+                snipped = re.findall(r"(?<=types\/)(.*?)(?=\.png)", str(img))
+                print(snipped)
+            if re.search(r'flags', str(img)):
+                snipped = re.findall(r"(?<=#)(.*?)(?=\")", str(img))
+                print(snipped[0])
+        print()
 time.sleep(1)
