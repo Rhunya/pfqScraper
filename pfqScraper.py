@@ -17,10 +17,12 @@ for tipbox in content.findAll('div', attrs={'class':'fieldmontip'}):
         if re.search(r'types', str(img)):
             # <img src="https://pfq-static.com/img/types/normal.png/t=1262702646"/>
             # want to print whatever is after the last slash and before the .png in the src url, ex "normal"
+            snipped = re.search(r'/(?<=types\/)(.*?)(?=\.png)/', str(img))
             print(img)
         if re.search(r'flags', str(img)):
             # <img src="https://pfq-static.com/img/dex/flags/all.svg/t=1674162478#paldea" style="height:1em;vertical-align:middle"/>
             # want to print whatever is after the pound at the end of the src url, ex "paldea"
+            snipped = re.search(r'/(?<=#)(.*?)(?=")/', str(img))
             print(img)
     print()
 time.sleep(1)
