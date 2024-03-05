@@ -19,7 +19,7 @@ content = bs(html, features="html.parser")
 
 # extract relevant info from html
 for tipbox in content.findAll('div', attrs={'class':'fieldmontip'}):
-    name = re.findall(r"(?<=Species:  )(.*?)(?= Type)", tipbox.text)
+    name = re.findall(r"(?<=Species:  )(.*?)(?=Type)", tipbox.text)
     if (len(name) > 0):
         info = name
         imgs = tipbox.findAll('img')
@@ -33,5 +33,18 @@ for tipbox in content.findAll('div', attrs={'class':'fieldmontip'}):
             if re.search(r'gender', str(img)):
                 gender = re.findall(r"(?<=gender_)(.*?)(?=\.png)", str(img))
                 info.append(gender[0])
-        print(info)
+        # splitForme = info[0].split("Forme:")
+        # info[0] = splitForme[0].strip()
+        # if (len(splitForme)>1):
+        #     info.append(splitForme[1].strip())
+        # print(cleanInfo.strip())
+        info[0] = info[0].replace("Forme: ","")
+        for i in range(len(info)):
+            info[i] = str(info[i]).replace("['","")
+            info[i] = str(info[i]).replace("']","")
+        if (len(info)<5):
+            info.append("")
+        cleanInfo = "{},{},{},{},{}".format(info[0].strip(),info[1],info[2],str(info[3]),str(info[4]))
+        # print(info)
+        print(cleanInfo)
 time.sleep(1)
