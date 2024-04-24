@@ -20,10 +20,11 @@ content = bs(html, features="html.parser")
 # extract relevant info from html
 for tipbox in content.findAll('div', attrs={'class':'fieldmontip'}):
     name = re.findall(r"(?<=Species:  )(.*?)(?=Type)", tipbox.text)
-    # summary = re.findall(r"(?<=/summary/)(.*?)(?=\")", str(tipbox.href))
+    summary = re.findall(r"(?<=/summary/)[^hello](.*?)(?=\")", str(tipbox.href))
+    # <a href="/summary/[^hello](.*?)">
     if (len(name) > 0):
         info = name
-        # info.append(summary)
+        info.append(summary)
         imgs = tipbox.findAll('img')
         for img in imgs:
             if re.search(r'types', str(img)):
